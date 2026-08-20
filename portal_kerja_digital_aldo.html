@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Kerja Digital — Aldo</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf9',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
+              950: '#042f2e',
+            },
+            accent: {
+              gold: '#d97706',
+              emerald: '#059669',
+              indigo: '#4f46e5',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Mesh Background Effects */
+    .bg-grid-pattern {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    }
+    
+    .light .bg-grid-pattern {
+      background-image: 
+        linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+    }
+
+    /* Ambient Glows */
+    .glow-bg {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    /* Card Hover Animations */
+    .app-card {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .app-card:hover {
+      transform: translateY(-4px);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.2);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(148, 163, 184, 0.4);
+    }
+
+    /* Pulsing Badge Indicator */
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 0; }
+      100% { transform: scale(0.95); opacity: 0; }
+    }
+    .pulse-dot::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse-ring 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    }
+
+    /* Interactive Stamp Seal */
+    .official-seal {
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .official-seal:hover {
+      transform: rotate(12deg) scale(1.05);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-slate-950 bg-grid-pattern relative overflow-x-hidden transition-colors duration-300">
+
+  <div class="glow-bg w-[500px] h-[500px] bg-teal-600/30 -top-32 -left-32"></div>
+  <div class="glow-bg w-[400px] h-[400px] bg-indigo-600/20 top-1/3 -right-32"></div>
+  <div class="glow-bg w-[600px] h-[600px] bg-emerald-700/15 -bottom-48 left-1/4"></div>
+
+  <header class="sticky top-0 z-40 backdrop-blur-xl bg-slate-950/80 border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Subtitle -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-teal-700 p-0.5 shadow-lg shadow-teal-500/20 flex items-center justify-center">
+          <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center font-display font-bold text-teal-400 text-lg">
+            A
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-display font-bold text-lg text-white tracking-tight">Portal Aldo</span>
+            <span class="px-2 py-0.5 text-[10px] font-mono tracking-wider font-semibold uppercase bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-full">v2026.8</span>
+          </div>
+          <p class="text-xs text-slate-400 font-medium hidden sm:block">Sekretariat Wadir II · Poltekkes Kemenkes Jayapura</p>
+        </div>
+      </div>
+
+      <!-- Right Controls: Live Time & Theme Toggle -->
+      <div class="flex items-center gap-3 sm:gap-4">
+        <!-- Live Clock Pill -->
+        <div class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-slate-300 font-mono text-xs shadow-inner">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span id="live-clock" class="tracking-wide">00:00:00 WIT</span>
+        </div>
+
+        <!-- Copy Quick Link Button -->
+        <button id="share-portal-btn" title="Bagikan Tautan Portal" class="p-2 text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 w-full space-y-10">
+
+    <section class="relative bg-gradient-to-b from-slate-900/90 to-slate-900/40 backdrop-blur-md rounded-3xl p-6 sm:p-10 border border-slate-800 shadow-2xl overflow-hidden">
+      <!-- Decorative Top Line Accent -->
+      <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-teal-500 via-indigo-500 to-amber-500"></div>
+
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 relative z-10">
+        
+        <!-- Left Hero Content -->
+        <div class="max-w-2xl space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700/60 text-xs font-mono text-slate-300">
+            <svg class="w-3.5 h-3.5 text-teal-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+            </svg>
+            <span>Pusat Navigasi Aplikasi Mandiri</span>
+          </div>
+
+          <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+            Portal Kerja <span class="bg-gradient-to-r from-teal-300 via-emerald-400 to-amber-300 bg-clip-text text-transparent italic">Digital</span>
+          </h1>
+
+          <p class="text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
+            Satu pintu akses untuk seluruh aplikasi internal pengelolaan Barang Milik Negara (BMN), agenda disposisi lisan, kearsipan surat, hingga generator otomatis dokumen pengadaan.
+          </p>
+
+          <!-- Quick Metadata / Date Info -->
+          <div class="pt-2 flex flex-wrap items-center gap-4 text-xs font-mono text-slate-400">
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              <span id="hero-date-str">Agustus 2026</span>
+            </div>
+            <span class="text-slate-700">•</span>
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              <span>Jayapura, Papua</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Badge Official Seal SVG -->
+        <div class="flex justify-start lg:justify-end shrink-0">
+          <div class="official-seal relative cursor-pointer group">
+            <svg class="w-36 h-36 sm:w-44 sm:h-44 text-amber-500/80 drop-shadow-[0_0_15px_rgba(217,119,6,0.2)]" viewBox="0 0 200 200" aria-hidden="true">
+              <defs>
+                <path id="curveTop" d="M 25,100 A 75,75 0 1 1 175,100" fill="none"/>
+                <path id="curveBottom" d="M 175,100 A 75,75 0 1 1 25,100" fill="none"/>
+              </defs>
+              <!-- Outer Dashed Ring -->
+              <circle cx="100" cy="100" r="92" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="4 4" class="opacity-80"/>
+              <!-- Inner Solid Ring -->
+              <circle cx="100" cy="100" r="76" fill="none" stroke="currentColor" stroke-width="1.5" class="opacity-90"/>
+              <!-- Curved Top Text -->
+              <text font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600" letter-spacing="1.6" fill="currentColor" class="opacity-90">
+                <textPath href="#curveTop" startOffset="50%" text-anchor="middle">SEKRETARIAT WADIR II</textPath>
+              </text>
+              <!-- Curved Bottom Text -->
+              <text font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="600" letter-spacing="1.4" fill="currentColor" class="opacity-90">
+                <textPath href="#curveBottom" startOffset="50%" text-anchor="middle">POLTEKKES KEMENKES JAYAPURA</textPath>
+              </text>
+              <!-- Center Text -->
+              <text x="100" y="93" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="22" fill="#f59e0b">ALDO</text>
+              <text x="100" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="9" letter-spacing="1.5" fill="currentColor" class="opacity-80">AGUSTUS 2026</text>
+              <circle cx="100" cy="122" r="2" fill="currentColor"/>
+            </svg>
+            <!-- Badge Tooltip Hint -->
+            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-950 text-[10px] font-mono px-2 py-0.5 rounded border border-slate-700 text-slate-300 pointer-events-none whitespace-nowrap">
+              Stempel Resmi Pengembang
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-teal-400 shrink-0">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 font-medium">Total Aplikasi</p>
+          <p class="text-2xl font-display font-bold text-white" id="stat-total">5</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-emerald-950/60 border border-emerald-800/50 flex items-center justify-center text-emerald-400 shrink-0">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 font-medium">Aplikasi Cloud (Online)</p>
+          <p class="text-2xl font-display font-bold text-emerald-400" id="stat-online">3</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-amber-950/60 border border-amber-800/50 flex items-center justify-center text-amber-400 shrink-0">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 font-medium">Generator Berkas Lokal</p>
+          <p class="text-2xl font-display font-bold text-amber-400" id="stat-lokal">2</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-indigo-950/60 border border-indigo-800/50 flex items-center justify-center text-indigo-400 shrink-0">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 font-medium">Sinkronisasi Database</p>
+          <p class="text-sm font-mono font-semibold text-slate-200 mt-1">Google Sheets</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+      
+      <!-- Category Filter Tabs -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar">
+        <button class="filter-btn active px-4 py-2 rounded-xl font-mono text-xs font-medium transition-all bg-teal-500 text-slate-950 font-semibold shadow-lg shadow-teal-500/20 whitespace-nowrap" data-filter="all">
+          Semua Berkas (<span id="count-all">5</span>)
+        </button>
+        <button class="filter-btn px-4 py-2 rounded-xl font-mono text-xs font-medium transition-all bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white whitespace-nowrap" data-filter="aset">
+          Aset &amp; Inventaris
+        </button>
+        <button class="filter-btn px-4 py-2 rounded-xl font-mono text-xs font-medium transition-all bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white whitespace-nowrap" data-filter="agenda">
+          Agenda &amp; Arsip
+        </button>
+        <button class="filter-btn px-4 py-2 rounded-xl font-mono text-xs font-medium transition-all bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white whitespace-nowrap" data-filter="dokumen">
+          Generator Dokumen
+        </button>
+      </div>
+
+      <!-- Live Search Box -->
+      <div class="relative min-w-[260px]">
+        <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="Cari nama aplikasi, versi, tag..." 
+          class="w-full bg-slate-900/90 border border-slate-800 rounded-xl pl-10 pr-4 py-2 text-xs font-sans text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 transition-all"
+        />
+        <button id="clear-search" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 text-xs font-bold">
+          ✕
+        </button>
+      </div>
+
+    </section>
+
+    <main id="app-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- CARD 1: BMN Tracker -->
+      <article class="app-card group relative bg-slate-900/70 hover:bg-slate-900/90 border border-slate-800/80 hover:border-teal-500/40 rounded-2xl p-6 flex flex-col justify-between shadow-xl transition-all" data-category="aset" data-keywords="bmn tracker siman v7 aset inventaris qr pinjam">
+        <div class="space-y-4">
+          <!-- Top Category Pill & Registry No -->
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold tracking-wider uppercase bg-teal-950 text-teal-300 border border-teal-800/60">
+              Aset
+            </span>
+            <span class="font-mono text-[11px] text-slate-400">No. 01/APL/BMN/VIII/2026</span>
+          </div>
+
+          <!-- App Icon & Title -->
+          <div class="flex items-start gap-4 pt-1">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 p-2.5 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 shrink-0 group-hover:scale-105 transition-transform">
+              <svg class="w-full h-full" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+              </svg>
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <h2 class="font-display font-bold text-lg text-white group-hover:text-teal-300 transition-colors">BMN Tracker</h2>
+                <span class="font-mono text-xs px-1.5 py-0.5 bg-slate-800 text-slate-300 rounded font-medium">v7</span>
+              </div>
+              <p class="text-xs text-slate-400">Companion SIMAN v2 — Backend Google Sheets</p>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <p class="text-sm text-slate-300 leading-relaxed pt-1">
+            Lacak peminjaman, pengembalian, dan mutasi Barang Milik Negara, lengkap dengan pemindaian QR SIMAN untuk opname fisik lapangan.
+          </p>
+        </div>
+
+        <!-- Footer Card Action -->
+        <div class="pt-6 mt-4 border-t border-slate-800/60 flex items-center justify-between">
+          <div class="flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 font-medium">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span>Online</span>
+          </div>
+
+          <a href="https://wadirdua.github.io/bmn-tracker/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-teal-500/10 hover:bg-teal-500 text-teal-400 hover:text-slate-950 border border-teal-500/30 hover:border-teal-500 font-mono text-xs font-semibold transition-all">
+            <span>Buka Aplikasi</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- CARD 2: Buku Agenda Kerja -->
+      <article class="app-card group relative bg-slate-900/70 hover:bg-slate-900/90 border border-slate-800/80 hover:border-indigo-500/40 rounded-2xl p-6 flex flex-col justify-between shadow-xl transition-all" data-category="agenda" data-keywords="buku agenda kerja disposisi lisan wadir 2 google sheets">
+        <div class="space-y-4">
+          <!-- Top Category Pill & Registry No -->
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold tracking-wider uppercase bg-indigo-950 text-indigo-300 border border-indigo-800/60">
+              Agenda
+            </span>
+            <span class="font-mono text-[11px] text-slate-400">No. 02/APL/AGD/VIII/2026</span>
+          </div>
+
+          <!-- App Icon & Title -->
+          <div class="flex items-start gap-4 pt-1">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-600 to-slate-800 p-2.5 flex items-center justify-center text-white shadow-lg shadow-sky-500/20 shrink-0 group-hover:scale-105 transition-transform">
+              <svg class="w-full h-full" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+              </svg>
+            </div>
+            <div class="space-y-1">
+              <h2 class="font-display font-bold text-lg text-white group-hover:text-indigo-300 transition-colors">Buku Agenda Kerja</h2>
+              <p class="text-xs text-slate-400">Disposisi lisan Wadir II — Tersinkron Google Sheets</p>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <p class="text-sm text-slate-300 leading-relaxed pt-1">
+            Catat setiap arahan lisan dari Wakil Direktur II, pantau statusnya dari baru hingga selesai, tersinkron otomatis ke Google Sheets.
+          </p>
+        </div>
+
+        <!-- Footer Card Action -->
+        <div class="pt-6 mt-4 border-t border-slate-800/60 flex items-center justify-between">
+          <div class="flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 font-medium">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span>Online</span>
+          </div>
+
+          <a href="https://mr-aldogeorge.github.io/Catatan/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-500/10 hover:bg-indigo-500 text-indigo-400 hover:text-slate-950 border border-indigo-500/30 hover:border-indigo-500 font-mono text-xs font-semibold transition-all">
+            <span>Buka Aplikasi</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- CARD 3: Arsip Disposisi -->
+      <article class="app-card group relative bg-slate-900/70 hover:bg-slate-900/90 border border-slate-800/80 hover:border-amber-500/40 rounded-2xl p-6 flex flex-col justify-between shadow-xl transition-all" data-category="agenda" data-keywords="arsip disposisi v10 kepegawaian anggaran drive sheets">
+        <div class="space-y-4">
+          <!-- Top Category Pill & Registry No -->
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold tracking-wider uppercase bg-amber-950 text-amber-300 border border-amber-800/60">
+              Arsip
+            </span>
+            <span class="font-mono text-[11px] text-slate-400">No. 03/APL/ARS/VIII/2026</span>
+          </div>
+
+          <!-- App Icon & Title -->
+          <div class="flex items-start gap-4 pt-1">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-600 to-amber-900 p-2.5 flex items-center justify-center text-white shadow-lg shadow-amber-500/20 shrink-0 group-hover:scale-105 transition-transform">
+              <svg class="w-full h-full" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v1a2 2 0 01-2 2M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+              </svg>
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <h2 class="font-display font-bold text-lg text-white group-hover:text-amber-300 transition-colors">Arsip Disposisi</h2>
+                <span class="font-mono text-xs px-1.5 py-0.5 bg-slate-800 text-slate-300 rounded font-medium">v10</span>
+              </div>
+              <p class="text-xs text-slate-400">Kepegawaian &amp; Anggaran — Google Drive &amp; Sheets</p>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <p class="text-sm text-slate-300 leading-relaxed pt-1">
+            Arsipkan surat disposisi fisik: foto surat, catatan pimpinan, dan status tindak lanjut, tersimpan rapi dan siap diekspor ke Excel.
+          </p>
+        </div>
+
+        <!-- Footer Card Action -->
+        <div class="pt-6 mt-4 border-t border-slate-800/60 flex items-center justify-between">
+          <div class="flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 font-medium">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span>Online</span>
+          </div>
+
+          <a href="https://wadirdua.github.io/arsip-disposisi/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500 text-amber-400 hover:text-slate-950 border border-amber-500/30 hover:border-amber-500 font-mono text-xs font-semibold transition-all">
+            <span>Buka Aplikasi</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- CARD 4: Generator Pengadaan V29 -->
+      <article class="app-card group relative bg-slate-900/70 hover:bg-slate-900/90 border border-slate-800/80 hover:border-amber-500/40 rounded-2xl p-6 flex flex-col justify-between shadow-xl transition-all" data-category="dokumen" data-keywords="generator pengadaan v29 pl ppk dokumen pengadaan langsung lokal">
+        <div class="space-y-4">
+          <!-- Top Category Pill & Registry No -->
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold tracking-wider uppercase bg-amber-950/80 text-amber-300 border border-amber-800/60">
+              Dokumen
+            </span>
+            <span class="font-mono text-[11px] text-slate-400">No. 04/APL/PPK/VIII/2026</span>
+          </div>
+
+          <!-- App Icon & Title -->
+          <div class="flex items-start gap-4 pt-1">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 p-2.5 flex items-center justify-center font-display font-bold text-slate-950 text-xl shadow-lg shadow-amber-500/20 shrink-0 group-hover:scale-105 transition-transform">
+              PL
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <h2 class="font-display font-bold text-lg text-white group-hover:text-amber-300 transition-colors">Generator Pengadaan</h2>
+                <span class="font-mono text-xs px-1.5 py-0.5 bg-slate-800 text-slate-300 rounded font-medium">V29</span>
+              </div>
+              <p class="text-xs text-slate-400">Isi sekali, 19 dokumen otomatis terisi</p>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <p class="text-sm text-slate-300 leading-relaxed pt-1">
+            Isi data sekali, hasilkan otomatis hingga 19 dokumen pengadaan langsung, dari undangan hingga berita acara, siap ekspor ke Word/PDF.
+          </p>
+        </div>
+
+        <!-- Local Path Drawer & Footer -->
+        <div class="space-y-3 pt-4 border-t border-slate-800/60">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5 text-[11px] font-mono text-amber-400 font-medium">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              <span>Berkas Lokal</span>
+            </div>
+
+            <button 
+              type="button" 
+              class="local-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 font-mono text-xs font-medium transition-all"
+              data-path="file:///C:/Users/ASUS/Documents/BMN/Dwn%20File%20bmn/Include2026/PPK/Aplikasi/V29_Generator_Dokumen_Pengadaan_Langsung.html"
+              data-rawpath="C:\Users\ASUS\Documents\BMN\Dwn File bmn\Include2026\PPK\Aplikasi\V29_Generator_Dokumen_Pengadaan_Langsung.html"
+            >
+              <span>Buka File</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Path Box -->
+          <div class="path-box hidden p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-2 text-xs font-mono">
+            <p class="text-slate-400 text-[11px]">Path File Windows:</p>
+            <p class="text-amber-200 select-all break-all bg-slate-900 p-2 rounded border border-slate-800/60 text-[11px] leading-tight">
+              C:\Users\ASUS\Documents\BMN\Dwn File bmn\Include2026\PPK\Aplikasi\V29_Generator_Dokumen_Pengadaan_Langsung.html
+            </p>
+            <div class="flex justify-end pt-1">
+              <button type="button" class="copy-btn px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] border border-slate-700 flex items-center gap-1">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Salin Path</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 5: BAST Generator V9 -->
+      <article class="app-card group relative bg-slate-900/70 hover:bg-slate-900/90 border border-slate-800/80 hover:border-amber-500/40 rounded-2xl p-6 flex flex-col justify-between shadow-xl transition-all" data-category="dokumen" data-keywords="bast generator v9 berita acara serah terima ppk penyedia pengguna kwitansi lokal">
+        <div class="space-y-4">
+          <!-- Top Category Pill & Registry No -->
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold tracking-wider uppercase bg-amber-950/80 text-amber-300 border border-amber-800/60">
+              Dokumen
+            </span>
+            <span class="font-mono text-[11px] text-slate-400">No. 05/APL/PPK/VIII/2026</span>
+          </div>
+
+          <!-- App Icon & Title -->
+          <div class="flex items-start gap-4 pt-1">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-600 to-amber-800 p-2.5 flex items-center justify-center font-display font-bold text-slate-950 text-xl shadow-lg shadow-amber-500/20 shrink-0 group-hover:scale-105 transition-transform">
+              BA
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <h2 class="font-display font-bold text-lg text-white group-hover:text-amber-300 transition-colors">BAST Generator</h2>
+                <span class="font-mono text-xs px-1.5 py-0.5 bg-slate-800 text-slate-300 rounded font-medium">V9</span>
+              </div>
+              <p class="text-xs text-slate-400">Penyedia → PPK &amp; PPK → Pengguna</p>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <p class="text-sm text-slate-300 leading-relaxed pt-1">
+            Susun Berita Acara Serah Terima dari penyedia ke PPK hingga ke pengguna per unit kerja, lengkap dengan BAPP, BAP, dan kwitansi.
+          </p>
+        </div>
+
+        <!-- Local Path Drawer & Footer -->
+        <div class="space-y-3 pt-4 border-t border-slate-800/60">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5 text-[11px] font-mono text-amber-400 font-medium">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              <span>Berkas Lokal</span>
+            </div>
+
+            <button 
+              type="button" 
+              class="local-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 font-mono text-xs font-medium transition-all"
+              data-path="file:///C:/Users/ASUS/Documents/BMN/Dwn%20File%20bmn/Include2026/PPK/Aplikasi/BAST_V9_Generator.html"
+              data-rawpath="C:\Users\ASUS\Documents\BMN\Dwn File bmn\Include2026\PPK/Aplikasi\BAST_V9_Generator.html"
+            >
+              <span>Buka File</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Path Box -->
+          <div class="path-box hidden p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-2 text-xs font-mono">
+            <p class="text-slate-400 text-[11px]">Path File Windows:</p>
+            <p class="text-amber-200 select-all break-all bg-slate-900 p-2 rounded border border-slate-800/60 text-[11px] leading-tight">
+              C:\Users\ASUS\Documents\BMN\Dwn File bmn\Include2026\PPK\Aplikasi\BAST_V9_Generator.html
+            </p>
+            <div class="flex justify-end pt-1">
+              <button type="button" class="copy-btn px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] border border-slate-700 flex items-center gap-1">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Salin Path</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </main>
+
+    <div id="no-results" class="hidden py-16 text-center space-y-3 bg-slate-900/40 border border-slate-800 rounded-2xl">
+      <div class="w-12 h-12 rounded-full bg-slate-800 text-slate-400 mx-auto flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <p class="text-slate-300 font-medium text-sm">Tidak ada aplikasi yang cocok dengan kriteria pencarian.</p>
+      <button id="reset-filter-btn" class="text-xs text-teal-400 hover:underline font-mono">Reset Filter &amp; Pencarian</button>
+    </div>
+
+  </div>
+
+  <footer class="mt-auto border-t border-slate-800/80 bg-slate-950/90 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full border border-amber-500/40 bg-amber-500/10 text-amber-400 font-mono text-[9px] font-bold flex items-center justify-center tracking-tighter">
+          SAH
+        </div>
+        <div>
+          <p class="text-slate-200 font-medium">© Aldo · Agustus 2026</p>
+          <p class="text-[11px]">Seluruh aplikasi di portal ini dirancang dan dikembangkan secara mandiri.</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 font-mono text-[11px] text-slate-400">
+        <span>Kemenkes Jayapura</span>
+        <span>•</span>
+        <span>Sekretariat Wadir II</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Notification Toast Container -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-slate-900 text-slate-100 border border-teal-500/40 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-xs font-mono">
+      <span class="w-2 h-2 rounded-full bg-teal-400"></span>
+      <span id="toast-msg">Pesan notifikasi</span>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+      // 1. Live Jayapura (WIT) Clock
+      function updateJayapuraClock() {
+        const now = new Date();
+        const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jayapura' };
+        const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Jayapura' };
+        
+        const dateStr = new Intl.DateTimeFormat('id-ID', optionsDate).format(now);
+        const timeStr = new Intl.DateTimeFormat('id-ID', optionsTime).format(now);
+        
+        document.getElementById('live-clock').textContent = `${timeStr} WIT`;
+        document.getElementById('hero-date-str').textContent = dateStr;
+      }
+      updateJayapuraClock();
+      setInterval(updateJayapuraClock, 1000);
+
+      // 2. Toast Notifier Helper
+      const toastEl = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      let toastTimer;
+
+      function showToast(message) {
+        clearTimeout(toastTimer);
+        toastMsg.textContent = message;
+        toastEl.classList.remove('translate-y-20', 'opacity-0');
+        toastTimer = setTimeout(() => {
+          toastEl.classList.add('translate-y-20', 'opacity-0');
+        }, 3000);
+      }
+
+      // 3. Fallback Clipboard Copy Function
+      function copyTextToClipboard(text, successMessage) {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text).then(() => {
+            showToast(successMessage || 'Tersalin ke clipboard!');
+          }).catch(() => {
+            execCommandCopy(text, successMessage);
+          });
+        } else {
+          execCommandCopy(text, successMessage);
+        }
+      }
+
+      function execCommandCopy(text, successMessage) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          showToast(successMessage || 'Tersalin ke clipboard!');
+        } catch (err) {
+          showToast('Gagal menyalin otomatis');
+        }
+        document.body.removeChild(textArea);
+      }
+
+      // 4. Filtering & Search Engine
+      const cards = Array.from(document.querySelectorAll('#app-grid article'));
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const searchInput = document.getElementById('search-input');
+      const clearSearchBtn = document.getElementById('clear-search');
+      const noResults = document.getElementById('no-results');
+      const resetFilterBtn = document.getElementById('reset-filter-btn');
+
+      let currentFilter = 'all';
+
+      function applyFilterAndSearch() {
+        const query = searchInput.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        if (query.length > 0) {
+          clearSearchBtn.classList.remove('hidden');
+        } else {
+          clearSearchBtn.classList.add('hidden');
+        }
+
+        cards.forEach(card => {
+          const category = card.dataset.category;
+          const keywords = (card.dataset.keywords || '').toLowerCase();
+          const cardText = card.textContent.toLowerCase();
+
+          const matchesCategory = (currentFilter === 'all' || category === currentFilter);
+          const matchesSearch = query === '' || keywords.includes(query) || cardText.includes(query);
+
+          if (matchesCategory && matchesSearch) {
+            card.style.display = '';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (visibleCount === 0) {
+          noResults.classList.remove('hidden');
+        } else {
+          noResults.classList.add('hidden');
+        }
+      }
+
+      // Filter Button Click Listener
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          filterBtns.forEach(b => {
+            b.classList.remove('active', 'bg-teal-500', 'text-slate-950', 'font-semibold', 'shadow-lg');
+            b.classList.add('bg-slate-900', 'text-slate-300');
+          });
+          btn.classList.add('active', 'bg-teal-500', 'text-slate-950', 'font-semibold', 'shadow-lg');
+          btn.classList.remove('bg-slate-900', 'text-slate-300');
+          
+          currentFilter = btn.dataset.filter;
+          applyFilterAndSearch();
+        });
+      });
+
+      // Search Input Listener
+      searchInput.addEventListener('input', applyFilterAndSearch);
+
+      clearSearchBtn.addEventListener('click', function() {
+        searchInput.value = '';
+        applyFilterAndSearch();
+        searchInput.focus();
+      });
+
+      resetFilterBtn.addEventListener('click', function() {
+        searchInput.value = '';
+        currentFilter = 'all';
+        filterBtns[0].click();
+      });
+
+      // 5. Handling Local File Clicking & Path Drawer
+      document.querySelectorAll('.local-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const pathBox = btn.closest('article').querySelector('.path-box');
+          const isFileProtocol = window.location.protocol === 'file:';
+          const fileUrl = btn.dataset.path;
+          const rawPath = btn.dataset.rawpath;
+
+          if (isFileProtocol) {
+            window.open(fileUrl, '_blank');
+          } else {
+            // Toggle path drawer for HTTP/HTTPS web protocol
+            pathBox.classList.toggle('hidden');
+            if (!pathBox.classList.contains('hidden')) {
+              copyTextToClipboard(rawPath, 'Path berkas lokal tersalin!');
+            }
+          }
+        });
+      });
+
+      // Copy Path Button Inside Drawer
+      document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const rawPath = btn.closest('article').querySelector('.local-btn').dataset.rawpath;
+          copyTextToClipboard(rawPath, 'Path berkas lokal berhasil disalin!');
+          
+          const textSpan = btn.querySelector('span');
+          const origText = textSpan.textContent;
+          textSpan.textContent = 'Tersalin ✓';
+          setTimeout(() => { textSpan.textContent = origText; }, 2000);
+        });
+      });
+
+      // 6. Share Portal Button
+      document.getElementById('share-portal-btn').addEventListener('click', function() {
+        copyTextToClipboard(window.location.href, 'Tautan portal berhasil disalin!');
+      });
+
+    });
+  </script>
+</body>
+</html>
